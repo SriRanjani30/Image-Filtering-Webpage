@@ -1,90 +1,109 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory
-from PIL import Image, ImageFilter, ImageOps
-import os
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5;
+    margin: 0;
+    padding: 0;
+}
 
-app = Flask(__name__)
-UPLOAD_FOLDER = 'uploads'
-OUTPUT_FOLDER = 'outputs'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
+.container {
+    max-width: 600px;
+}
 
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-if not os.path.exists(OUTPUT_FOLDER):
-    os.makedirs(OUTPUT_FOLDER)
+.card {
+    border-radius: 10px;
+    margin-top: 50px;
+    border: none;
+    background: linear-gradient(135deg, #6e8efb, #a777e3);
+    color: white;
+}
 
-def apply_grayscale(image):
-    return ImageOps.grayscale(image)
+.card-header {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.3);
+}
 
-def apply_sepia(image):
-    width, height = image.size
-    pixels = image.load()  # Create the pixel map
+.card-body {
+    padding: 30px;
+}
 
-    for py in range(height):
-        for px in range(width):
-            r, g, b = image.getpixel((px, py))
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 0;
+}
 
-            tr = int(0.393 * r + 0.769 * g + 0.189 * b)
-            tg = int(0.349 * r + 0.686 * g + 0.168 * b)
-            tb = int(0.272 * r + 0.534 * g + 0.131 * b)
+.form-group {
+    margin-top: 20px;
+}
 
-            # Normalize if out of bounds
-            if tr > 255:
-                tr = 255
-            if tg > 255:
-                tg = 255
-            if tb > 255:
-                tb = 255
+.form-control-file {
+    display: none;
+}
 
-            pixels[px, py] = (tr, tg, tb)
+label[for="fileInput"] {
+    background-color: #ff7f50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-    return image
+label[for="fileInput"]:hover {
+    background-color: #ff6347;
+    transform: scale(1.05);
+}
 
-def apply_blur(image, radius=5):
-    return image.filter(ImageFilter.GaussianBlur(radius))
+.btn-lg {
+    font-size: 18px;
+    padding: 10px 20px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-def apply_edge_detection(image):
-    return image.filter(ImageFilter.FIND_EDGES)
+.btn-lg:hover {
+    transform: scale(1.05);
+}
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+.btn-group .btn {
+    margin: 10px 5px;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
 
-@app.route('/upload', methods=['POST'])
-def upload_image():
-    if 'file' not in request.files:
-        return redirect(request.url)
-    file = request.files['file']
-    if file.filename == '':
-        return redirect(request.url)
-    if file:
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filepath)
-        return redirect(url_for('show_filters', filename=file.filename))
+.btn-dark {
+    background-color: #343a40;
+    border-color: #343a40;
+}
 
-@app.route('/filters/<filename>')
-def show_filters(filename):
-    return render_template('filters.html', filename=filename)
+.btn-dark:hover {
+    background-color: #23272b;
+    border-color: #1d2124;
+    transform: scale(1.05);
+}
 
-@app.route('/apply_filter/<filename>/<filter_name>')
-def apply_filter(filename, filter_name):
-    filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    image = Image.open(filepath)
-    
-    if filter_name == 'grayscale':
-        filtered_image = apply_grayscale(image)
-    elif filter_name == 'sepia':
-        filtered_image = apply_sepia(image)
-    elif filter_name == 'blur':
-        filtered_image = apply_blur(image)
-    elif filter_name == 'edge_detection':
-        filtered_image = apply_edge_detection(image)
-    
-    output_filename = f"{filter_name}_{filename}"
-    output_filepath = os.path.join(app.config['OUTPUT_FOLDER'], output_filename)
-    filtered_image.save(output_filepath)
-    
-    return send_from_directory(app.config['OUTPUT_FOLDER'], output_filename)
+img {
+    border-radius: 10px;
+    max-width: 100%;
+    height: auto;
+}
 
-if __name__ == '__main__':
-    app.run(debug=True)
+.alert {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.shadow-lg {
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175) !important;
+}
+
+.btn-group .btn {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-group .btn:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
