@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Apply Video Filters</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="card shadow-lg">
+            <div class="card-header text-center">
+                <h1>Apply Filters to Your Video</h1>
+            </div>
+            <div class="card-body text-center">
+                <video controls class="img-fluid mb-4">
+                    <source src="{{ url_for('static', filename='uploads/' + filename) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div class="btn-group">
+                    <a href="{{ url_for('apply_video_filter', filename=filename, filter_name='grayscale') }}" class="btn btn-dark">Grayscale</a>
+                    <a href="{{ url_for('apply_video_filter', filename=filename, filter_name='sepia') }}" class="btn btn-dark">Sepia</a>
+                    <a href="{{ url_for('apply_video_filter', filename=filename, filter_name='blur') }}" class="btn btn-dark">Blur</a>
+                    <a href="{{ url_for('apply_video_filter', filename=filename, filter_name='edge_detection') }}" class="btn btn-dark">Edge Detection</a>
+                </div>
+                {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                    <div class="alert alert-danger mt-4">
+                      {% for message in messages %}
+                        <p>{{ message }}</p>
+                      {% endfor %}
+                    </div>
+                  {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>
