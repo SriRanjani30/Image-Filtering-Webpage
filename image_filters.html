@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Apply Filters</title>
+    <title>Apply Image Filters</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <div class="container mt-5">
         <div class="card shadow-lg">
-            <div class="card-header text-center bg-primary text-white">
+            <div class="card-header text-center">
                 <h1>Apply Filters to Your Image</h1>
             </div>
             <div class="card-body text-center">
                 <img src="{{ url_for('static', filename='uploads/' + filename) }}" class="img-fluid mb-4" alt="Uploaded Image">
                 <div class="btn-group">
-                    <a href="{{ url_for('apply_filter', filename=filename, filter_name='grayscale') }}" class="btn btn-dark">Grayscale</a>
-                    <a href="{{ url_for('apply_filter', filename=filename, filter_name='sepia') }}" class="btn btn-dark">Sepia</a>
-                    <a href="{{ url_for('apply_filter', filename=filename, filter_name='blur') }}" class="btn btn-dark">Blur</a>
-                    <a href="{{ url_for('apply_filter', filename=filename, filter_name='edge_detection') }}" class="btn btn-dark">Edge Detection</a>
+                    <a href="{{ url_for('apply_image_filter', filename=filename, filter_name='grayscale') }}" class="btn btn-dark">Grayscale</a>
+                    <a href="{{ url_for('apply_image_filter', filename=filename, filter_name='sepia') }}" class="btn btn-dark">Sepia</a>
+                    <a href="{{ url_for('apply_image_filter', filename=filename, filter_name='blur') }}" class="btn btn-dark">Blur</a>
+                    <a href="{{ url_for('apply_image_filter', filename=filename, filter_name='edge_detection') }}" class="btn btn-dark">Edge Detection</a>
                 </div>
                 {% with messages = get_flashed_messages() %}
                   {% if messages %}
